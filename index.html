@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mini Builder</title>
+    <title>Terrain Builder</title>
+      <!-- Compiled and minified Materialize CSS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+      <!-- Compiled and minified Materalize JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -9,11 +13,12 @@
 
 <div id="controls">
     <div>Rows:</div>
-    <div><button onclick="updateRows(-1)">-</button> <span id="rows"></span> <button onclick="updateRows(1)">+</button></div>
-    <div>Columns:</div>
-    <div><button onclick="updateCols(-1)">-</button> <span id="cols"></span> <button onclick="updateCols(1)">+</button></div>
+    <input type="range" id="rows" min="1" max="5" value="2" onchange="setRows()" />
     <br />
-    <div><button onclick="saveSTL()">Download</button></div>
+    <div>Columns:</div>
+    <input type="range" id="cols" min="1" max="5" value="2" onchange="setCols()" />
+    <br />
+    <div><button class="btn" onclick="saveSTL()">Download</button></div>
 </div>
 <div id="speed"></div>
 
@@ -94,6 +99,16 @@ function updateScreenControls() {
             tiles.push( tile );
         }
     }
+}
+
+function setRows() {
+    rows = document.getElementById('rows').value;
+    updateScreenControls();
+}
+
+function setCols() {
+    cols = document.getElementById('cols').value;
+    updateScreenControls();
 }
 
 function updateRows( amount ) {
