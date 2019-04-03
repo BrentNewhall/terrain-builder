@@ -1,0 +1,29 @@
+body {
+    margin: 0px;
+}
+canvas {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 80vw;
+    bottom: 0px;
+    z-index: 1;
+}
+#controls {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    width: 20vw;
+    background-color: white;
+    z-index: 2;
+}
+#speed {
+    position: absolute;
+    right: 205px;
+    bottom: 5px;
+    color: white;
+    z-index: 2;
+    font-family: 'Courier', 'Courier New';
+    text-align: right;
+}
