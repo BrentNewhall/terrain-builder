@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini Builder</title>
+    <style>
+        body {
+            margin: 0px;
+        }
+        canvas {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 80vw;
+            bottom: 0px;
+            z-index: 1;
+        }
+        #controls {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            width: 20vw;
+            background-color: white;
+            z-index: 2;
+        }
+        #speed {
+            position: absolute;
+            right: 205px;
+            bottom: 5px;
+            color: white;
+            z-index: 2;
+            font-family: 'Courier', 'Courier New';
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="controls">
+    <div>Rows:</div>
+    <div><button onclick="updateRows(-1)">-</button> <span id="rows"></span> <button onclick="updateRows(1)">+</button></div>
+    <div>Columns:</div>
+    <div><button onclick="updateCols(-1)">-</button> <span id="cols"></span> <button onclick="updateCols(1)">+</button></div>
+    <br />
+    <div><button onclick="saveSTL()">Download</button></div>
+</div>
+<div id="speed"></div>
+
+<script src="three.js"></script>
+<script src="STLExporter.js"></script>
+<script src="FileSaver.js"></script>
+<script>
+var mesh = null;
+var rows = 2;
+var cols = 2;
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
+
+// Base
+var geometry = new THREE.BoxGeometry( 1, 0.1, 1 );
+geometry.computeFaceNormals();
+geometry.computeVertexNormals();
+let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+var base = new THREE.Mesh( geometry, material );
+scene.add( base );
+var tiles = [];
+
+// Light
+var light = new THREE.DirectionalLight( 0xffffff, 1 );
+light.position.z = 10;
+scene.add( light );
+
+// Position camera
+camera.position.z = 5;
+camera.position.y = 1.5;
+
+function animate() {
+    requestAnimationFrame( animate );
+    //base.rotation.y += 0.01;
+    renderer.render( scene, camera );
+}
+
+function updateScreenControls() {
+    document.getElementById("rows").innerHTML = rows;
+    document.getElementById("cols").innerHTML = cols;
+    let geometry = new THREE.BoxGeometry( rows, 0.1, cols );
+    base.geometry.dispose();
+    base.geometry = geometry;
+    // Remove all existing tiles
+    for( let tile of tiles ) {
+        scene.remove( tile );
+    }
+    // Generate tiles
+    for( let row = 0; row < rows; row++ ) {
+        for( let col = 0; col < cols; col++ ) {
+            const geometry = new THREE.BoxGeometry( 0.8, 0.1, 0.8 );
+            geometry.computeFaceNormals();
+            geometry.computeVertexNormals();
+            const material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+            let tile = new THREE.Mesh( geometry, material );
+            tile.position.y = 0.1;
+            tile.position.x = row - 0.5;
+            tile.position.z = col - 0.5;
+            scene.add( tile );
+            tiles.push( tile );
+        }
+    }
+}
+
+function updateRows( amount ) {
+    if( rows + amount >= 1  &&  rows + amount <= 5 ) {
+        rows += amount;
+        updateScreenControls();
+    }
+}
+
+function updateCols( amount ) {
+    if( cols + amount >= 1  &&  cols + amount <= 5 ) {
+        cols += amount;
+        updateScreenControls();
+    }
+}
+
+function saveSTL() {
+    var exporter = new THREE.STLExporter();
+    var stlString = exporter.parse( scene );
+    var blob = new Blob([stlString], {type: 'text/plain'});
+    saveAs( blob, 'tile.stl' );
+}
+
+updateScreenControls();
+animate();
+</script>
+
+</body>
+</html>

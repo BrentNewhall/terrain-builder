@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini Builder</title>
+    <style>
+        body {
+            margin: 0px;
+        }
+        canvas {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 80vw;
+            bottom: 0px;
+            z-index: 1;
+        }
+        #controls {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            width: 20vw;
+            background-color: white;
+            z-index: 2;
+        }
+        #speed {
+            position: absolute;
+            right: 205px;
+            bottom: 5px;
+            color: white;
+            z-index: 2;
+            font-family: 'Courier', 'Courier New';
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="controls">
+    <div>Width:</div>
+    <div><button>-</button> 2 <button>+</button></div>
+    <div>Height:</div>
+    <div><button>-</button> 2 <button>+</button></div>
+</div>
+<div id="speed"></div>
+
+<script src="three.js"></script>
+<script src="loaders/STLLoader.js"></script>
+<script>
+var mesh = null;
+var speed = 0;
+var yaw = 0;
+var pitch = 0;
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
+
+// Cube
+/*
+var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+geometry.computeFaceNormals();
+geometry.computeVertexNormals();
+var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+var cube = new THREE.Mesh( geometry, material );
+scene.add( cube ); */
+
+// Light
+var light = new THREE.DirectionalLight( 0xffffff, 1 );
+light.position.z = 2;
+scene.add( light );
+
+// STL file
+var stlLoader = new THREE.STLLoader();
+stlLoader.load( './stl/Male_Elf_Druid.stl', function( geometry ) {
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
+    let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+    mesh = new THREE.Mesh( geometry, material );
+    mesh.scale.set( 0.1, 0.1, 0.1 );
+    mesh.rotateX( 0 - Math.PI / 2 );
+    scene.add( mesh );
+});
+
+// Position camera
+camera.position.z = 5;
+camera.position.y = 1.5;
+
+function animate() {
+    requestAnimationFrame( animate );
+    /* cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01; */
+    if( mesh !== null )
+        mesh.rotation.z += 0.01;
+    renderer.render( scene, camera );
+    if( speed !== 0  ||  yaw !== 0 ) {
+        var direction = new THREE.Vector3();
+        camera.getWorldDirection( direction );
+        direction.x += yaw * 0.2;
+        direction.y += pitch * 0.2;
+        camera.position.add( direction.multiplyScalar( speed * 0.01 ) );
+    }
+}
+
+function updateScreenControls() {
+    document.getElementById("speed").innerHTML = "S: " + speed + "<br />Y: " + yaw + "<br />P: " + pitch;
+}
+
+function keyDown(e) {
+    if( e.keyCode === 87 ) { // w
+        speed += 1;
+        updateScreenControls();
+    }
+    else if( e.keyCode === 83 ) { // s
+        speed -= 1;
+        updateScreenControls();
+    }
+    else if( e.keyCode === 0x26 ) { // Key up
+        pitch += 1;
+        updateScreenControls();
+    }
+    else if( e.keyCode === 0x28 ) { // Key down
+        pitch -= 1;
+        updateScreenControls();
+    }
+    else if( e.keyCode === 0x25 ) { // Key left
+        yaw -= 1;
+        updateScreenControls();
+    }
+    else if( e.keyCode === 0x27 ) { // Key left
+        yaw += 1;
+        updateScreenControls();
+    }
+}
+document.addEventListener("keydown", keyDown, false );
+updateScreenControls();
+animate();
+</script>
+
+</body>
+</html>
