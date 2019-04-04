@@ -14,10 +14,10 @@
 <div id="controls">
     <h1>Terrain Builder</h1>
     <div>Rows:</div>
-    <input type="range" id="rows" min="1" max="5" value="2" onchange="setRows()" />
+    <input type="range" id="rows" min="1" max="8" value="2" onchange="setRows()" />
     <br />
     <div>Columns:</div>
-    <input type="range" id="cols" min="1" max="5" value="2" onchange="setCols()" />
+    <input type="range" id="cols" min="1" max="8" value="2" onchange="setCols()" />
     <br />
     <div>Walls:</div>
     <button class="wallBtnHorizontal" id="northWall" onclick="toggleWall('northWall')">&nbsp;</button><br />
@@ -207,14 +207,14 @@ function setCols() {
 }
 
 function updateRows( amount ) {
-    if( rows + amount >= 1  &&  rows + amount <= 5 ) {
+    if( rows + amount >= 1  &&  rows + amount <= 8 ) {
         rows += amount;
         updateScreenControls();
     }
 }
 
 function updateCols( amount ) {
-    if( cols + amount >= 1  &&  cols + amount <= 5 ) {
+    if( cols + amount >= 1  &&  cols + amount <= 8 ) {
         cols += amount;
         updateScreenControls();
     }
