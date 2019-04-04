@@ -38,7 +38,7 @@
 <script src="FileSaver.js"></script>
 <script>
 
-var tileSize = 25;
+var tileSize = 32;
 var mesh = null;
 var rows = 2;
 var cols = 2;
@@ -50,7 +50,7 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 // Base
-var baseGeometry = new THREE.BoxGeometry( tileSize, 0.1, tileSize );
+var baseGeometry = new THREE.BoxGeometry( tileSize, tileSize * 0.1, tileSize );
 baseGeometry.computeFaceNormals();
 baseGeometry.computeVertexNormals();
 let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
@@ -71,12 +71,18 @@ var clock = new THREE.Clock();
 var matrix = new THREE.Matrix4();
 
 var walls = [];
+var wallFlags = [];
+for( let i = 0; i < 4; i++ ) {
+    wallFlags[i] = false;
+}
 var northWall = false;
 var southWall = false;
 var eastWall = false;
 var westWall = false;
 
 function toggleWall( wallId ) {
+    /* wallFlags[wallIndex] = wallFlags[wallIndex] ? false : true;
+    document.getElementById('wall' + wallIndex).style.backgroundColor = (wallFlags[wallIndex]) ? 'black' : 'white'; */
     if( wallId === 'northWall' ) {
         northWall = northWall ? false : true;
         document.getElementById(wallId).style.backgroundColor = (northWall) ? 'black' : 'white';
@@ -111,7 +117,7 @@ function animate() {
 function updateScreenControls() {
     document.getElementById("rows").innerHTML = rows;
     document.getElementById("cols").innerHTML = cols;
-    let geometry = new THREE.BoxGeometry( rows * tileSize, cols * tileSize, 0.1 );
+    let geometry = new THREE.BoxGeometry( rows * tileSize, cols * tileSize, tileSize * 0.05 );
     base.geometry.dispose();
     base.geometry = geometry;
     // Remove all existing tiles
@@ -125,7 +131,7 @@ function updateScreenControls() {
     const tileMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff } );
     for( let row = 0; row < rows; row++ ) {
         for( let col = 0; col < cols; col++ ) {
-            const tileGeometry = new THREE.BoxGeometry( tileSize * 0.9, tileSize * 0.9, tileSize * 0.1 );
+            const tileGeometry = new THREE.BoxGeometry( tileSize * 0.9, tileSize * 0.9, tileSize * 0.05 );
             tileGeometry.computeFaceNormals();
             tileGeometry.computeVertexNormals();
             let tile = new THREE.Mesh( tileGeometry, tileMaterial );
@@ -184,6 +190,10 @@ function updateScreenControls() {
         scene.add( wall );
         walls.push( wall );
     }
+    // Move camera based on size of base
+    const max = ((rows < cols) ? cols : rows) * 25;
+    camera.position.z = max;
+    camera.position.y = 0 - max;
 }
 
 function setRows() {
