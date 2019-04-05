@@ -4,6 +4,7 @@
     <title>Terrain Builder</title>
     <meta name="description" content="Create tabletop terrain tiles and download an STL file for 3D printing." />
     <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="favicon.png" />
     <!-- Compiled and minified Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Compiled and minified Materalize JavaScript -->
@@ -28,14 +29,14 @@
     <button class="wallBtnHorizontal" id="southWall" onclick="toggleWall('southWall')">&nbsp;</button><br />
     <br />
     Feature:<br />
-    <select onchange="changeFeature()">
+    <select id="feature" onchange="changeFeature()">
         <option value="none">(None)</option>
         <option value="fountain">Fountain</option>
     </select>
     <br />
     <div style="display: flex; justify-content: space-around">
         <button class="btn" id="downloadBtn" onclick="saveSTL()">Download</button>
-        <button class="btn orange" onclick="updateScreenControls()">Reset</button>
+        <button class="btn orange" onclick="reset()">Reset</button>
         <a class="waves-effect waves-light btn grey modal-trigger" href="#helpModal">Help</a><br />
     </div>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -311,13 +312,28 @@ function saveSTL() {
     saveAs( blob, 'tiles-' + rows + 'x' + cols + '.stl' );
 }
 
+function reset() {
+    document.getElementById("feature")[0].selected = true;
+    elems = document.querySelectorAll('select');
+    instances = M.FormSelect.init(elems);
+    changeFeature();
+    updateScreenControls();
+}
+
 function changeFeature() {
-    loader.load( './stl/Male_Elf_Druid.stl', function ( geometry ) {
-        if( feature !== null ) {
-            scene.remove( feature );
-            delete feature;
-        }
-        feature = new THREE.Mesh( geometry );
+    if( feature !== null ) {
+        scene.remove( feature );
+        delete feature;
+    }
+    const features = [ 'none', 'Fountain' ];
+    const i = parseInt(document.getElementById("feature").selectedIndex);
+    if( i < 1  ||  i > features.length ) {
+        return;
+    }
+    loader.load( './stl/' + features[i] + '.stl', function ( geometry ) {
+        const material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+        feature = new THREE.Mesh( geometry, material );
+        feature.position.z = tileSize * 0.15;
         scene.add( feature );
     });
 }
