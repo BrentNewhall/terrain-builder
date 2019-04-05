@@ -2,10 +2,12 @@
 <html>
 <head>
     <title>Terrain Builder</title>
-      <!-- Compiled and minified Materialize CSS -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-      <!-- Compiled and minified Materalize JavaScript -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <meta name="description" content="Create tabletop terrain tiles and download an STL file for 3D printing." />
+    <meta charset="utf-8" />
+    <!-- Compiled and minified Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Compiled and minified Materalize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -43,13 +45,14 @@
     </script>
     <!-- img width="300" height="250" alt="Temp" src="http://lorempixel.com/300/250" / -->
 </div>
+
 <div id="speed"></div>
 
 <script src="three.js"></script>
 <script src="STLExporter.js"></script>
 <script src="FileSaver.js"></script>
-<script>
 
+<script>
 var tileSize = 30.5;
 var mesh = null;
 var rows = 2;
@@ -302,19 +305,19 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
  <!-- Help Modal -->
- <div id="helpModal" class="modal">
-        <div class="modal-content">
-          <h4>How This Works</h4>
-          <p>This app generates tabletop RPG terrain tiles and exports them for 3D printing.</p>
-          <p>Use the <em>Rows</em> and <em>Columns</em> sliders to choose the size of the tile.</p>
-          <p>Click the <em>Walls</em> buttons to add walls on any 4 sides.</p>
-          <p>Click the <em>Download</em> button to download the tile as an STL file.</p>
-          <p>This app generates tiles that are 1.25" square and 0.25" walls. This allws a 1", 28mm-scale mini to fit on any square, even if that square contains walls, while also keeping all tiles a consistent size.</p>
-        </div>
-        <div class="modal-footer">
-          <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
-        </div>
-      </div>
+<div id="helpModal" class="modal">
+    <div class="modal-content">
+        <h4>How This Works</h4>
+        <p>This app generates tabletop RPG terrain tiles and exports them for 3D printing.</p>
+        <p>Use the <em>Rows</em> and <em>Columns</em> sliders to choose the size of the tile.</p>
+        <p>Click the <em>Walls</em> buttons to add walls on any 4 sides.</p>
+        <p>Click the <em>Download</em> button to download the tile as an STL file.</p>
+        <p>This app generates tiles that are 1.25" square and 0.25" walls. This allws a 1", 28mm-scale mini to fit on any square, even if that square contains walls, while also keeping all tiles a consistent size.</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
+    </div>
+</div>
 
 </body>
 </html>
