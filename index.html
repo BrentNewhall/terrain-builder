@@ -24,11 +24,12 @@
     <button class="wallBtnVertical" id="eastWall" onclick="toggleWall('eastWall')">&nbsp;</button>
     <button class="wallBtnVertical" id="westWall" onclick="toggleWall('westWall')">&nbsp;</button><br />
     <button class="wallBtnHorizontal" id="southWall" onclick="toggleWall('southWall')">&nbsp;</button><br />
-    <button class="btn" id="downloadBtn" onclick="saveSTL()">Download</button>
     <br />
-    <br />
-    <a class="waves-effect waves-light btn grey modal-trigger" href="#helpModal">Help</a><br />
-    <br />
+    <div style="display: flex; justify-content: space-around">
+        <button class="btn" id="downloadBtn" onclick="saveSTL()">Download</button>
+        <button class="btn orange" onclick="updateScreenControls()">Reset</button>
+        <a class="waves-effect waves-light btn grey modal-trigger" href="#helpModal">Help</a><br />
+    </div>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- Terrain Builder ad -->
     <ins class="adsbygoogle"

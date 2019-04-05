@@ -28,9 +28,6 @@ canvas {
     font-family: 'Courier', 'Courier New';
     text-align: right;
 }
-#downloadBtn {
-    margin-top: 25px;
-}
 #eastWall {
     float: right;
 }
