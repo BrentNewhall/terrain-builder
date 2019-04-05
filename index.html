@@ -27,6 +27,12 @@
     <button class="wallBtnVertical" id="westWall" onclick="toggleWall('westWall')">&nbsp;</button><br />
     <button class="wallBtnHorizontal" id="southWall" onclick="toggleWall('southWall')">&nbsp;</button><br />
     <br />
+    Feature:<br />
+    <select onchange="changeFeature()">
+        <option value="none">(None)</option>
+        <option value="fountain">Fountain</option>
+    </select>
+    <br />
     <div style="display: flex; justify-content: space-around">
         <button class="btn" id="downloadBtn" onclick="saveSTL()">Download</button>
         <button class="btn orange" onclick="updateScreenControls()">Reset</button>
@@ -51,6 +57,7 @@
 <script src="three.js"></script>
 <script src="STLExporter.js"></script>
 <script src="FileSaver.js"></script>
+<script src="loaders/STLLoader.js"></script>
 
 <script>
 var tileSize = 30.5;
@@ -113,6 +120,16 @@ camera.position.y = -70;
 var clock = new THREE.Clock();
 var matrix = new THREE.Matrix4();
 
+// Terrain feature
+var feature = null;
+var loader = new THREE.STLLoader();
+// Setup select
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems);
+});
+
+// Setup walls
 var walls = [];
 var wallFlags = [];
 for( let i = 0; i < 4; i++ ) {
@@ -292,6 +309,17 @@ function saveSTL() {
     var stlString = exporter.parse( scene );
     var blob = new Blob([stlString], {type: 'text/plain'});
     saveAs( blob, 'tiles-' + rows + 'x' + cols + '.stl' );
+}
+
+function changeFeature() {
+    loader.load( './stl/Male_Elf_Druid.stl', function ( geometry ) {
+        if( feature !== null ) {
+            scene.remove( feature );
+            delete feature;
+        }
+        feature = new THREE.Mesh( geometry );
+        scene.add( feature );
+    });
 }
 
 updateScreenControls();
