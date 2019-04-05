@@ -29,7 +29,7 @@
     <br />
     <a class="waves-effect waves-light btn grey modal-trigger" href="#helpModal">Help</a><br />
     <br />
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- Terrain Builder ad -->
     <ins class="adsbygoogle"
         style="display:block"
@@ -53,12 +53,20 @@ var tileSize = 30;
 var mesh = null;
 var rows = 2;
 var cols = 2;
+var mouseHovering = false;
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 var renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.setSize( window.innerWidth - 320, window.innerHeight );
 document.body.appendChild( renderer.domElement );
+renderer.domElement.id = "mainCanvas";
+document.getElementById("mainCanvas").addEventListener("mouseover", (e) => {
+    mouseHovering = true;
+})
+document.getElementById("controls").addEventListener("mouseover", (e) => {
+    mouseHovering = false;
+})
 
 // Base
 var baseGeometry = new THREE.BoxGeometry( tileSize, tileSize * 0.1, tileSize );
@@ -68,6 +76,23 @@ let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
 var base = new THREE.Mesh( baseGeometry, material );
 scene.add( base );
 var tiles = [];
+
+document.getElementById("mainCanvas").addEventListener('click', function(event) {
+    console.log( "Clicked" );
+    let raycaster = new THREE.Raycaster();
+    let mouse = new THREE.Vector2();
+    mouse.x = ( event.clientX / document.getElementById("mainCanvas").clientWidth ) * 2 - 1;
+    mouse.y = 0 - ( event.clientY / document.getElementById("mainCanvas").clientHeight ) * 2 + 1;
+    raycaster.setFromCamera( mouse, camera );
+    console.log( "Mouse", mouse );
+    console.log( "There are",tiles.length,"tiles." );
+    let intersects = raycaster.intersectObjects( tiles, true );
+    if (intersects.length > 0) {
+        let selectedObject = intersects[0];
+        console.log( "Found", selectedObject );
+        scene.remove( selectedObject.object );
+ 	}
+}, false)
 
 // Light
 var light = new THREE.DirectionalLight( 0xffffff, 1 );
@@ -119,8 +144,10 @@ function animate() {
     const elapsedTime = clock.getElapsedTime();
     //matrix.makeRotationZ( clock.getDelta() * 2 * Math.PI * 10 );
     //camera.position.applyMatrix4( matrix );
-    camera.position.x = 50 * Math.cos( elapsedTime * 0.5 );
-    camera.position.y = 50 * Math.sin( elapsedTime * 0.5 );
+    if( ! mouseHovering ) {
+        camera.position.x = 50 * Math.cos( elapsedTime * 0.5 );
+        camera.position.y = 50 * Math.sin( elapsedTime * 0.5 );
+    }
     camera.lookAt( base.position );
     renderer.render( scene, camera );
 }
@@ -135,6 +162,8 @@ function updateScreenControls() {
     for( let tile of tiles ) {
         scene.remove( tile );
     }
+    tiles = [];
+
     // Generate tiles
     const halfTileSize = tileSize * 0.5;
     const rowOffset = halfTileSize * rows - halfTileSize;
