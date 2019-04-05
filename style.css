@@ -31,6 +31,11 @@ canvas {
 #eastWall {
     float: right;
 }
+#spinner {
+    z-index: 5;
+    display: none;
+    text-align: center;
+}
 .wallBtnHorizontal {
     width: 100%;
     background-color: white;
