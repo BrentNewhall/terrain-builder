@@ -69,34 +69,30 @@ document.getElementById("controls").addEventListener("mouseover", (e) => {
 })
 
 // Base
-var baseGeometry = new THREE.BoxGeometry( tileSize, tileSize * 0.1, tileSize );
+var origin = new THREE.Vector3( 0, 0, 0 );
+/* var baseGeometry = new THREE.BoxGeometry( tileSize, tileSize * 0.1, tileSize );
 baseGeometry.computeFaceNormals();
 baseGeometry.computeVertexNormals();
 let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
 var base = new THREE.Mesh( baseGeometry, material );
-//scene.add( base );
+scene.add( base ); */
 var bases = [];
 var tiles = [];
 
 document.getElementById("mainCanvas").addEventListener('click', function(event) {
-    console.log( "Clicked" );
     let raycaster = new THREE.Raycaster();
     let mouse = new THREE.Vector2();
     mouse.x = ( event.clientX / document.getElementById("mainCanvas").clientWidth ) * 2 - 1;
     mouse.y = 0 - ( event.clientY / document.getElementById("mainCanvas").clientHeight ) * 2 + 1;
     raycaster.setFromCamera( mouse, camera );
-    console.log( "Mouse", mouse );
-    console.log( "There are",tiles.length,"tiles." );
     let intersects = raycaster.intersectObjects( tiles, true );
     if (intersects.length > 0) {
         let selectedObject = intersects[0];
-        console.log( "Found", selectedObject );
         scene.remove( selectedObject.object );
  	}
     intersects = raycaster.intersectObjects( bases, true );
     if (intersects.length > 0) {
         let selectedObject = intersects[0];
-        console.log( "Found", selectedObject );
         scene.remove( selectedObject.object );
  	}
 }, false)
@@ -147,7 +143,6 @@ function toggleWall( wallId ) {
 
 function animate() {
     requestAnimationFrame( animate );
-    //base.rotation.y += 0.01;
     const elapsedTime = clock.getElapsedTime();
     //matrix.makeRotationZ( clock.getDelta() * 2 * Math.PI * 10 );
     //camera.position.applyMatrix4( matrix );
@@ -155,16 +150,16 @@ function animate() {
         camera.position.x = 50 * Math.cos( elapsedTime * 0.5 );
         camera.position.y = 50 * Math.sin( elapsedTime * 0.5 );
     }
-    camera.lookAt( base.position );
+    camera.lookAt( origin );
     renderer.render( scene, camera );
 }
 
 function updateScreenControls() {
     document.getElementById("rows").innerHTML = rows;
     document.getElementById("cols").innerHTML = cols;
-    let geometry = new THREE.BoxGeometry( rows * tileSize, cols * tileSize, tileSize * 0.025 );
-    base.geometry.dispose();
-    base.geometry = geometry;
+    //let geometry = new THREE.BoxGeometry( rows * tileSize, cols * tileSize, tileSize * 0.025 );
+    //base.geometry.dispose();
+    //base.geometry = geometry;
     // Remove all existing bases
     for( let base of bases ) {
         scene.remove( base );
