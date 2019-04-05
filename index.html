@@ -49,7 +49,7 @@
 <script src="FileSaver.js"></script>
 <script>
 
-var tileSize = 30;
+var tileSize = 30.5;
 var mesh = null;
 var rows = 2;
 var cols = 2;
@@ -74,7 +74,8 @@ baseGeometry.computeFaceNormals();
 baseGeometry.computeVertexNormals();
 let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
 var base = new THREE.Mesh( baseGeometry, material );
-scene.add( base );
+//scene.add( base );
+var bases = [];
 var tiles = [];
 
 document.getElementById("mainCanvas").addEventListener('click', function(event) {
@@ -87,6 +88,12 @@ document.getElementById("mainCanvas").addEventListener('click', function(event) 
     console.log( "Mouse", mouse );
     console.log( "There are",tiles.length,"tiles." );
     let intersects = raycaster.intersectObjects( tiles, true );
+    if (intersects.length > 0) {
+        let selectedObject = intersects[0];
+        console.log( "Found", selectedObject );
+        scene.remove( selectedObject.object );
+ 	}
+    intersects = raycaster.intersectObjects( bases, true );
     if (intersects.length > 0) {
         let selectedObject = intersects[0];
         console.log( "Found", selectedObject );
@@ -158,6 +165,11 @@ function updateScreenControls() {
     let geometry = new THREE.BoxGeometry( rows * tileSize, cols * tileSize, tileSize * 0.025 );
     base.geometry.dispose();
     base.geometry = geometry;
+    // Remove all existing bases
+    for( let base of bases ) {
+        scene.remove( base );
+    }
+    bases = [];
     // Remove all existing tiles
     for( let tile of tiles ) {
         scene.remove( tile );
@@ -171,7 +183,18 @@ function updateScreenControls() {
     const tileMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff } );
     for( let row = 0; row < rows; row++ ) {
         for( let col = 0; col < cols; col++ ) {
-            const tileGeometry = new THREE.BoxGeometry( tileSize * 0.9, tileSize * 0.9, tileSize * 0.025 );
+            // Add base
+            const baseGeometry = new THREE.BoxGeometry( tileSize, tileSize, tileSize * 0.025 );
+            baseGeometry.computeFaceNormals();
+            baseGeometry.computeVertexNormals();
+            let base = new THREE.Mesh( baseGeometry, tileMaterial );
+            base.position.z = 0;
+            base.position.x = row * tileSize - rowOffset;
+            base.position.y = col * tileSize - colOffset;
+            scene.add( base );
+            bases.push( base );
+            // Add tile
+            const tileGeometry = new THREE.BoxGeometry( tileSize * 0.95, tileSize * 0.95, tileSize * 0.025 );
             tileGeometry.computeFaceNormals();
             tileGeometry.computeVertexNormals();
             let tile = new THREE.Mesh( tileGeometry, tileMaterial );
@@ -186,9 +209,11 @@ function updateScreenControls() {
     for( let wall of walls ) {
         scene.remove( wall );
     }
+    walls = [];
     // TODO: Increase wall thickness by slightly less than double (from .132" to .24")
     const tileHeightMod = 0.375;
-    const tileZmod = tileHeightMod / 2.
+    const tileZmod = tileHeightMod / 2;
+    const wallLateralMod = 0.085;
     if( northWall ) {
         let geometry = new THREE.BoxGeometry( tileSize * rows, tileSize * 0.18, tileSize * tileHeightMod );
         geometry.computeFaceNormals();
@@ -196,7 +221,7 @@ function updateScreenControls() {
         let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
         let wall = new THREE.Mesh( geometry, material );
         wall.position.z = tileSize * tileZmod;
-        wall.position.y = tileSize * cols * 0.5 - (tileSize * 0.08);
+        wall.position.y = tileSize * cols * 0.5 - (tileSize * wallLateralMod);
         scene.add( wall );
         walls.push( wall );
     }
@@ -207,7 +232,7 @@ function updateScreenControls() {
         let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
         let wall = new THREE.Mesh( geometry, material );
         wall.position.z = tileSize * tileZmod;
-        wall.position.y = 0 - tileSize * cols * 0.5 + (tileSize * 0.08);
+        wall.position.y = 0 - tileSize * cols * 0.5 + (tileSize * wallLateralMod);
         scene.add( wall );
         walls.push( wall );
     }
@@ -218,7 +243,7 @@ function updateScreenControls() {
         let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
         let wall = new THREE.Mesh( geometry, material );
         wall.position.z = tileSize * tileZmod;
-        wall.position.x = tileSize * rows * 0.5 + (tileSize * 0.08);
+        wall.position.x = tileSize * rows * 0.5 + (tileSize * wallLateralMod);
         scene.add( wall );
         walls.push( wall );
     }
@@ -229,7 +254,7 @@ function updateScreenControls() {
         let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
         let wall = new THREE.Mesh( geometry, material );
         wall.position.z = tileSize * tileZmod;
-        wall.position.x = 0 - tileSize * rows * 0.5 + (tileSize * 0.08);
+        wall.position.x = 0 - tileSize * rows * 0.5 + (tileSize * wallLateralMod);
         scene.add( wall );
         walls.push( wall );
     }
