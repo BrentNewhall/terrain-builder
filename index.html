@@ -49,7 +49,7 @@
 <script src="FileSaver.js"></script>
 <script>
 
-var tileSize = 32;
+var tileSize = 30;
 var mesh = null;
 var rows = 2;
 var cols = 2;
@@ -128,7 +128,7 @@ function animate() {
 function updateScreenControls() {
     document.getElementById("rows").innerHTML = rows;
     document.getElementById("cols").innerHTML = cols;
-    let geometry = new THREE.BoxGeometry( rows * tileSize, cols * tileSize, tileSize * 0.05 );
+    let geometry = new THREE.BoxGeometry( rows * tileSize, cols * tileSize, tileSize * 0.025 );
     base.geometry.dispose();
     base.geometry = geometry;
     // Remove all existing tiles
@@ -142,11 +142,11 @@ function updateScreenControls() {
     const tileMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff } );
     for( let row = 0; row < rows; row++ ) {
         for( let col = 0; col < cols; col++ ) {
-            const tileGeometry = new THREE.BoxGeometry( tileSize * 0.9, tileSize * 0.9, tileSize * 0.05 );
+            const tileGeometry = new THREE.BoxGeometry( tileSize * 0.9, tileSize * 0.9, tileSize * 0.025 );
             tileGeometry.computeFaceNormals();
             tileGeometry.computeVertexNormals();
             let tile = new THREE.Mesh( tileGeometry, tileMaterial );
-            tile.position.z = tileSize * 0.05;
+            tile.position.z = tileSize * 0.025;
             tile.position.x = row * tileSize - rowOffset;
             tile.position.y = col * tileSize - colOffset;
             scene.add( tile );
@@ -157,47 +157,50 @@ function updateScreenControls() {
     for( let wall of walls ) {
         scene.remove( wall );
     }
+    // TODO: Increase wall thickness by slightly less than double (from .132" to .24")
+    const tileHeightMod = 0.375;
+    const tileZmod = tileHeightMod / 2.
     if( northWall ) {
-        let geometry = new THREE.BoxGeometry( tileSize * rows, tileSize * 0.1, tileSize * 0.25 );
+        let geometry = new THREE.BoxGeometry( tileSize * rows, tileSize * 0.18, tileSize * tileHeightMod );
         geometry.computeFaceNormals();
         geometry.computeVertexNormals();
         let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
         let wall = new THREE.Mesh( geometry, material );
-        wall.position.z = tileSize * 0.15;
-        wall.position.y = tileSize * cols * 0.5 - (tileSize * 0.05);
+        wall.position.z = tileSize * tileZmod;
+        wall.position.y = tileSize * cols * 0.5 - (tileSize * 0.08);
         scene.add( wall );
         walls.push( wall );
     }
     if( southWall ) {
-        let geometry = new THREE.BoxGeometry( tileSize * rows, tileSize * 0.1, tileSize * 0.25 );
+        let geometry = new THREE.BoxGeometry( tileSize * rows, tileSize * 0.18, tileSize * tileHeightMod );
         geometry.computeFaceNormals();
         geometry.computeVertexNormals();
         let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
         let wall = new THREE.Mesh( geometry, material );
-        wall.position.z = tileSize * 0.15;
-        wall.position.y = 0 - tileSize * cols * 0.5 + (tileSize * 0.05);
+        wall.position.z = tileSize * tileZmod;
+        wall.position.y = 0 - tileSize * cols * 0.5 + (tileSize * 0.08);
         scene.add( wall );
         walls.push( wall );
     }
     if( eastWall ) {
-        let geometry = new THREE.BoxGeometry( tileSize * 0.1, tileSize * cols, tileSize * 0.25 );
+        let geometry = new THREE.BoxGeometry( tileSize * 0.18, tileSize * cols, tileSize * tileHeightMod );
         geometry.computeFaceNormals();
         geometry.computeVertexNormals();
         let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
         let wall = new THREE.Mesh( geometry, material );
-        wall.position.z = tileSize * 0.15;
-        wall.position.x = tileSize * rows * 0.5 + (tileSize * 0.05);
+        wall.position.z = tileSize * tileZmod;
+        wall.position.x = tileSize * rows * 0.5 + (tileSize * 0.08);
         scene.add( wall );
         walls.push( wall );
     }
     if( westWall ) {
-        let geometry = new THREE.BoxGeometry( tileSize * 0.1, tileSize * cols, tileSize * 0.25 );
+        let geometry = new THREE.BoxGeometry( tileSize * 0.18, tileSize * cols, tileSize * tileHeightMod );
         geometry.computeFaceNormals();
         geometry.computeVertexNormals();
         let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
         let wall = new THREE.Mesh( geometry, material );
-        wall.position.z = tileSize * 0.15;
-        wall.position.x = 0 - tileSize * rows * 0.5 + (tileSize * 0.05);
+        wall.position.z = tileSize * tileZmod;
+        wall.position.x = 0 - tileSize * rows * 0.5 + (tileSize * 0.08);
         scene.add( wall );
         walls.push( wall );
     }
