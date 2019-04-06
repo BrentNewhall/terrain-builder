@@ -16,6 +16,11 @@
 
 <div id="controls">
     <h1>Terrain Builder</h1>
+    Style:
+    <select id="style" onchange="changeStyle()">
+        <option value="0">Simple</option>
+        <option value="1">Stone</option>
+    </select>
     <div>Rows:</div>
     <input type="range" id="rows" min="1" max="8" value="2" onchange="setRows()" />
     <br />
@@ -152,7 +157,9 @@ var westWall = false;
 var wallHeightModBase = 0.375;
 var wallHeightMod = 0.375;
 
+// Tiles
 var tileMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+var tileType = 0;
 
 function toggleWall( wallId ) {
     /* wallFlags[wallIndex] = wallFlags[wallIndex] ? false : true;
@@ -193,6 +200,18 @@ function animate() {
     renderer.render( scene, camera );
 }
 
+function addCustomTile( tileGeometry, row, col, rows, cols, rowOffset, colOffset ) {
+    tileGeometry.translate( 0, 0, 0 );
+    tileGeometry.computeBoundingBox();
+    let tile = new THREE.Mesh( tileGeometry, tileMaterial );
+    tile.geometry.scale( 0.95, 0.95, 0.95 );
+    tile.position.z = tileSize * 0.025;
+    tile.position.x = row * tileSize - rowOffset;
+    tile.position.y = col * tileSize - colOffset - 2;
+    scene.add( tile );
+    tiles.push( tile );
+}
+
 function updateScreenControls() {
     document.getElementById("rows").innerHTML = rows;
     document.getElementById("cols").innerHTML = cols;
@@ -227,27 +246,22 @@ function updateScreenControls() {
             scene.add( base );
             bases.push( base );
             // Add tile
-            /* loader.load( './stl/Field_tile.stl', function ( tileGeometry ) {
-                console.log( "Loaded" );
+            if( tileType == 0 ) {
+                const tileGeometry = new THREE.BoxGeometry( tileSize * 0.95, tileSize * 0.95, tileSize * 0.025 );
+                tileGeometry.computeFaceNormals();
+                tileGeometry.computeVertexNormals();
                 let tile = new THREE.Mesh( tileGeometry, tileMaterial );
-                tile.geometry.scale( 10, 10, 10 );
                 tile.position.z = tileSize * 0.025;
                 tile.position.x = row * tileSize - rowOffset;
                 tile.position.y = col * tileSize - colOffset;
-                console.log( tile.geometry );
-                
                 scene.add( tile );
                 tiles.push( tile );
-            }); */
-            const tileGeometry = new THREE.BoxGeometry( tileSize * 0.95, tileSize * 0.95, tileSize * 0.025 );
-            tileGeometry.computeFaceNormals();
-            tileGeometry.computeVertexNormals();
-            let tile = new THREE.Mesh( tileGeometry, tileMaterial );
-            tile.position.z = tileSize * 0.025;
-            tile.position.x = row * tileSize - rowOffset;
-            tile.position.y = col * tileSize - colOffset;
-            scene.add( tile );
-            tiles.push( tile );
+            }
+            else {
+                loader.load( './stl/Field_tile.stl', function ( tileGeometry ) {
+                    addCustomTile( tileGeometry, row, col, rows, cols, rowOffset, colOffset );
+                });
+            }
         }
     }
     // Generate walls
@@ -343,6 +357,15 @@ function reset() {
     elems = document.querySelectorAll('select');
     instances = M.FormSelect.init(elems);
     changeFeature();
+    updateScreenControls();
+}
+
+function changeStyle() {
+    const i = parseInt(document.getElementById("style").selectedIndex);
+    if( i < 0  ||  i > 1 ) {
+        return;
+    }
+    tileType = i;
     updateScreenControls();
 }
 
