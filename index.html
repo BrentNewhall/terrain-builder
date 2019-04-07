@@ -20,6 +20,7 @@
     <select id="style" onchange="changeStyle()">
         <option value="0">Simple</option>
         <option value="1">Stone</option>
+        <option value="2">Cobblestone</option>
     </select>
     <div>Rows:</div>
     <input type="range" id="rows" min="1" max="8" value="2" onchange="setRows()" />
@@ -160,6 +161,16 @@ var wallHeightMod = 0.375;
 // Tiles
 var tileMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff } );
 var tileType = 0;
+var tileGeometryStone;
+loader.load( './stl/Field_tile.stl', function ( tileGeometry ) {
+    tileGeometryStone = tileGeometry;
+    tileGeometryStone.scale( 0.95, 0.95, 0.95 );
+});
+var tileGeometryCobble;
+loader.load( './stl/Cobblestone.stl', function ( tileGeometry ) {
+    tileGeometryCobble = tileGeometry;
+    tileGeometryCobble.scale( 0.95, 0.95, 0.95 );
+});
 
 function toggleWall( wallId ) {
     /* wallFlags[wallIndex] = wallFlags[wallIndex] ? false : true;
@@ -246,22 +257,40 @@ function updateScreenControls() {
             scene.add( base );
             bases.push( base );
             // Add tile
-            if( tileType == 0 ) {
-                const tileGeometry = new THREE.BoxGeometry( tileSize * 0.95, tileSize * 0.95, tileSize * 0.025 );
+            let tileGeometry = null;
+            let tile = null;
+            if( tileType === 0 ) {
+                tileGeometry = new THREE.BoxGeometry( tileSize * 0.95, tileSize * 0.95, tileSize * 0.025 );
                 tileGeometry.computeFaceNormals();
                 tileGeometry.computeVertexNormals();
-                let tile = new THREE.Mesh( tileGeometry, tileMaterial );
-                tile.position.z = tileSize * 0.025;
-                tile.position.x = row * tileSize - rowOffset;
-                tile.position.y = col * tileSize - colOffset;
-                scene.add( tile );
-                tiles.push( tile );
+                tile = new THREE.Mesh( tileGeometry, tileMaterial );
             }
+            else if( tileType === 1 ) {
+                tileGeometry = tileGeometryStone;
+                tileGeometry.translate( 0, 0, 0 );
+                tileGeometry.computeBoundingBox();
+                tile = new THREE.Mesh( tileGeometry, tileMaterial );
+            }
+            else if( tileType === 2 ) {
+                tileGeometry = tileGeometryCobble;
+                tileGeometry.translate( 0, 0, 0 );
+                tileGeometry.computeBoundingBox();
+                tile = new THREE.Mesh( tileGeometry, tileMaterial );
+            }
+            tile.position.z = tileSize * 0.025;
+            tile.position.x = row * tileSize - rowOffset;
+            tile.position.y = col * tileSize - colOffset;
+            if( tileType === 1  ||  tileType === 2 ) {
+                tile.position.y -= 2;
+            }
+            scene.add( tile );
+            tiles.push( tile );
+            /* }
             else {
                 loader.load( './stl/Field_tile.stl', function ( tileGeometry ) {
                     addCustomTile( tileGeometry, row, col, rows, cols, rowOffset, colOffset );
                 });
-            }
+            } */
         }
     }
     // Generate walls
@@ -362,7 +391,7 @@ function reset() {
 
 function changeStyle() {
     const i = parseInt(document.getElementById("style").selectedIndex);
-    if( i < 0  ||  i > 1 ) {
+    if( i < 0  ||  i > 2 ) {
         return;
     }
     tileType = i;
