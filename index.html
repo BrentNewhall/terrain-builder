@@ -142,6 +142,7 @@ document.getElementById("mainCanvas").addEventListener('click', function(event) 
     let intersects = raycaster.intersectObjects( tiles, true );
     if (intersects.length > 0) {
         let selectedObject = intersects[0];
+        //selectedObject.object.geometry = tileGeometryStone;
         scene.remove( selectedObject.object );
  	}
     intersects = raycaster.intersectObjects( bases, true );
@@ -191,11 +192,13 @@ var tileType = 0;
 var tileGeometryStone;
 loader.load( './stl/Field_tile.stl', function ( tileGeometry ) {
     tileGeometryStone = tileGeometry;
+    tileGeometryStone.translate( 0, -2, 0 );
     tileGeometryStone.scale( 0.95, 0.95, 0.95 );
 });
 var tileGeometryCobble;
 loader.load( './stl/Cobblestone.stl', function ( tileGeometry ) {
     tileGeometryCobble = tileGeometry;
+    tileGeometryCobble.translate( 0, -2, 0 );
     tileGeometryCobble.scale( 0.95, 0.95, 0.95 );
 });
 
@@ -307,9 +310,6 @@ function updateScreenControls() {
             tile.position.z = tileSize * 0.025;
             tile.position.x = row * tileSize - rowOffset;
             tile.position.y = col * tileSize - colOffset;
-            if( tileType === 1  ||  tileType === 2 ) {
-                tile.position.y -= 2;
-            }
             scene.add( tile );
             tiles.push( tile );
             /* }
