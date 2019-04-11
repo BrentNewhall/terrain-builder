@@ -189,6 +189,8 @@ var wallHeightMod = 0.375;
 // Tiles
 var tileMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff } );
 var tileType = 0;
+var tileGeometrySimple = new THREE.BoxGeometry( tileSize * 0.95, tileSize * 0.95, tileSize * 0.025 );;
+tileGeometrySimple.scale( 0.95, 0.95, 0.95 );
 var tileGeometryStone;
 loader.load( './stl/Field_tile.stl', function ( tileGeometry ) {
     tileGeometryStone = tileGeometry;
@@ -290,34 +292,22 @@ function updateScreenControls() {
             let tileGeometry = null;
             let tile = null;
             if( tileType === 0 ) {
-                tileGeometry = new THREE.BoxGeometry( tileSize * 0.95, tileSize * 0.95, tileSize * 0.025 );
-                tileGeometry.computeFaceNormals();
-                tileGeometry.computeVertexNormals();
-                tile = new THREE.Mesh( tileGeometry, tileMaterial );
+                tileGeometry = tileGeometrySimple;
             }
             else if( tileType === 1 ) {
                 tileGeometry = tileGeometryStone;
-                tileGeometry.translate( 0, 0, 0 );
-                tileGeometry.computeBoundingBox();
-                tile = new THREE.Mesh( tileGeometry, tileMaterial );
             }
             else if( tileType === 2 ) {
                 tileGeometry = tileGeometryCobble;
-                tileGeometry.translate( 0, 0, 0 );
-                tileGeometry.computeBoundingBox();
-                tile = new THREE.Mesh( tileGeometry, tileMaterial );
             }
+            tileGeometry.translate( 0, 0, 0 );
+            tileGeometry.computeBoundingBox();
+            tile = new THREE.Mesh( tileGeometry, tileMaterial );
             tile.position.z = tileSize * 0.025;
             tile.position.x = row * tileSize - rowOffset;
             tile.position.y = col * tileSize - colOffset;
             scene.add( tile );
             tiles.push( tile );
-            /* }
-            else {
-                loader.load( './stl/Field_tile.stl', function ( tileGeometry ) {
-                    addCustomTile( tileGeometry, row, col, rows, cols, rowOffset, colOffset );
-                });
-            } */
         }
     }
     // Generate walls
