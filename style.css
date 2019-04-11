@@ -5,7 +5,7 @@ canvas {
     position: absolute;
     left: 0px;
     top: 0px;
-    width: 100% - 320px;
+    width: 100% - 350px;
     bottom: 0px;
     z-index: 1;
 }
@@ -15,7 +15,7 @@ canvas {
     top: 0px;
     bottom: 0px;
     right: 0px;
-    width: 320px;
+    width: 350px;
     background-color: white;
     z-index: 2;
 }
