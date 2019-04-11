@@ -22,12 +22,6 @@
         <li class="tab"><a href="#tab-print">Print</a></li>
     </ul>
     <div id="tab-layout">
-        Style:
-        <select id="style" onchange="changeStyle()">
-            <option value="0">Simple</option>
-            <option value="1">Stone</option>
-            <option value="2">Cobblestone</option>
-        </select>
         <div>Rows:</div>
         <input type="range" id="rows" min="1" max="8" value="2" onchange="setRows()" />
         <br />
@@ -41,6 +35,12 @@
         <button class="wallBtnHorizontal" id="southWall" onclick="toggleWall('southWall')">&nbsp;</button><br />
     </div>
     <div id="tab-customize">
+        Tile style:
+        <select id="style" onchange="changeStyle()">
+            <option value="0">Simple</option>
+            <option value="1">Stone</option>
+            <option value="2">Cobblestone</option>
+        </select>
         <select id="wallHeight" onchange="changeWallHeight()">
             <option value="low">Low walls</option>
             <option value="high">High walls</option>
