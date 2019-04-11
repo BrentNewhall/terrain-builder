@@ -58,6 +58,8 @@
             <option value="none">Add feature...</option>
             <option value="fountain">Fountain</option>
         </select>
+        <br />
+        <button class="btn orange" onclick="reset()">Reset</button>
         <!-- Loading spinner -->
         <div id="spinner">
             <div class="preloader-wrapper big active">
@@ -78,8 +80,7 @@
     <div id="tab-print">
         <div style="display: flex; justify-content: space-around">
             <button class="btn" id="downloadBtn" onclick="saveSTL()">Download</button>
-            <button class="btn orange" onclick="reset()">Reset</button>
-            <a class="waves-effect waves-light btn grey modal-trigger" href="#helpModal">Help</a><br />
+            <a class="waves-effect waves-light btn blue modal-trigger" href="#helpModal">Help</a><br />
         </div>
     </div>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -458,9 +459,9 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="modal-content">
         <h4>How This Works</h4>
         <p>This app generates tabletop RPG terrain tiles and exports them for 3D printing.</p>
-        <p>Use the <em>Rows</em> and <em>Columns</em> sliders to choose the size of the tile.</p>
-        <p>Click the <em>Walls</em> buttons to add walls on any 4 sides.</p>
-        <p>Click the <em>Download</em> button to download the tile as an STL file.</p>
+        <p>Under the <strong>Design</strong> tab, use the <em>Rows</em> and <em>Columns</em> sliders to choose the size of the tile. Click the <em>Walls</em> buttons to add walls on any 4 sides.</p>
+        <p>Under the <strong>Customize</strong> tab, select a tile style and tap/click any tile to change it to that style. Click the <em>Low/High walls</em> drop-down to change wall height. Click <em>Add feature</em> to add an object to the center of the tile.</em></p>
+        <p>Under the <strong>Print</strong> tab, click the <em>Download</em> button to download the entire tile as an STL file for 3D printing.</p>
         <p>This app generates tiles that are 1.25" square and 0.25" walls. This allws a 1", 28mm-scale mini to fit on any square, even if that square contains walls, while also keeping all tiles a consistent size.</p>
     </div>
     <div class="modal-footer">
