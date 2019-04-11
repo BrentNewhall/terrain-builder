@@ -16,53 +16,63 @@
 
 <div id="controls">
     <h1>Terrain Builder</h1>
-    Style:
-    <select id="style" onchange="changeStyle()">
-        <option value="0">Simple</option>
-        <option value="1">Stone</option>
-        <option value="2">Cobblestone</option>
-    </select>
-    <div>Rows:</div>
-    <input type="range" id="rows" min="1" max="8" value="2" onchange="setRows()" />
-    <br />
-    <div>Columns:</div>
-    <input type="range" id="cols" min="1" max="8" value="2" onchange="setCols()" />
-    <br />
-    <div>Walls:</div>
-    <button class="wallBtnHorizontal" id="northWall" onclick="toggleWall('northWall')">&nbsp;</button><br />
-    <button class="wallBtnVertical" id="eastWall" onclick="toggleWall('eastWall')">&nbsp;</button>
-    <button class="wallBtnVertical" id="westWall" onclick="toggleWall('westWall')">&nbsp;</button><br />
-    <button class="wallBtnHorizontal" id="southWall" onclick="toggleWall('southWall')">&nbsp;</button><br />
-    <select id="wallHeight" onchange="changeWallHeight()">
-        <option value="low">Low walls</option>
-        <option value="high">High walls</option>
-    </select>
-    <br />
-    <select id="feature" onchange="changeFeature()">
-        <option value="none">Add feature...</option>
-        <option value="fountain">Fountain</option>
-    </select>
-    <!-- Loading spinner -->
-    <div id="spinner">
-        <div class="preloader-wrapper big active">
-            <div class="spinner-layer spinner-blue-only">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
-                </div>
-                <div class="gap-patch">
-                    <div class="circle"></div>
-                </div>
-                <div class="circle-clipper right">
-                    <div class="circle"></div>
+    <ul class="tabs">
+        <li class="tab"><a href="#tab1">Layout</a></li>
+        <li class="tab"><a href="#tab2">Customize</a></li>
+        <li class="tab"><a href="#tab3">Print</a></li>
+    </ul>
+    <div id="tab1">
+        Style:
+        <select id="style" onchange="changeStyle()">
+            <option value="0">Simple</option>
+            <option value="1">Stone</option>
+            <option value="2">Cobblestone</option>
+        </select>
+        <div>Rows:</div>
+        <input type="range" id="rows" min="1" max="8" value="2" onchange="setRows()" />
+        <br />
+        <div>Columns:</div>
+        <input type="range" id="cols" min="1" max="8" value="2" onchange="setCols()" />
+        <br />
+        <div>Walls:</div>
+        <button class="wallBtnHorizontal" id="northWall" onclick="toggleWall('northWall')">&nbsp;</button><br />
+        <button class="wallBtnVertical" id="eastWall" onclick="toggleWall('eastWall')">&nbsp;</button>
+        <button class="wallBtnVertical" id="westWall" onclick="toggleWall('westWall')">&nbsp;</button><br />
+        <button class="wallBtnHorizontal" id="southWall" onclick="toggleWall('southWall')">&nbsp;</button><br />
+    </div>
+    <div id="tab2">
+        <select id="wallHeight" onchange="changeWallHeight()">
+            <option value="low">Low walls</option>
+            <option value="high">High walls</option>
+        </select>
+        <br />
+        <select id="feature" onchange="changeFeature()">
+            <option value="none">Add feature...</option>
+            <option value="fountain">Fountain</option>
+        </select>
+        <!-- Loading spinner -->
+        <div id="spinner">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <br />
-    <div style="display: flex; justify-content: space-around">
-        <button class="btn" id="downloadBtn" onclick="saveSTL()">Download</button>
-        <button class="btn orange" onclick="reset()">Reset</button>
-        <a class="waves-effect waves-light btn grey modal-trigger" href="#helpModal">Help</a><br />
+    <div id="tab3">
+        <div style="display: flex; justify-content: space-around">
+            <button class="btn" id="downloadBtn" onclick="saveSTL()">Download</button>
+            <button class="btn orange" onclick="reset()">Reset</button>
+            <a class="waves-effect waves-light btn grey modal-trigger" href="#helpModal">Help</a><br />
+        </div>
     </div>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- img width="300" height="250" alt="Temp" src="http://lorempixel.com/300/250" / -->
@@ -434,6 +444,7 @@ animate();
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elems);
+    var instance = M.Tabs.init(document.querySelectorAll('.tabs'));
 });
 </script>
 
