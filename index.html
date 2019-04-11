@@ -47,6 +47,7 @@
             <option value="0">Simple</option>
             <option value="1">Stone</option>
             <option value="2">Cobblestone</option>
+            <option value="-1">(Delete)</option>
         </select>
         <select id="wallHeight" onchange="changeWallHeight()">
             <option value="low">Low walls</option>
@@ -142,11 +143,21 @@ document.getElementById("mainCanvas").addEventListener('click', function(event) 
     let intersects = raycaster.intersectObjects( tiles, true );
     if (intersects.length > 0) {
         let selectedObject = intersects[0];
-        //selectedObject.object.geometry = tileGeometryStone;
-        scene.remove( selectedObject.object );
+        if( tileType >= 0 ) {
+            selectedObject.object.geometry = tileGeometries[tileType];
+        }
+        /* else if( tileType === 1 ) {
+            selectedObject.object.geometry = tileGeometryStone;
+        }
+        else if( tileType === 2 ) {
+            selectedObject.object.geometry = tileGeometryCobble;
+        } */
+        else if( tileType === -1 ) {
+            scene.remove( selectedObject.object );
+        }
  	}
     intersects = raycaster.intersectObjects( bases, true );
-    if (intersects.length > 0) {
+    if( intersects.length > 0  &&  tileType === -1 ) {
         let selectedObject = intersects[0];
         scene.remove( selectedObject.object );
  	}
@@ -167,11 +178,6 @@ var matrix = new THREE.Matrix4();
 // Terrain feature
 var feature = null;
 var loader = new THREE.STLLoader();
-// Setup select
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems);
-});
 
 // Setup walls
 var walls = [];
@@ -189,24 +195,21 @@ var wallHeightMod = 0.375;
 // Tiles
 var tileMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff } );
 var tileType = 0;
-var tileGeometrySimple = new THREE.BoxGeometry( tileSize * 0.95, tileSize * 0.95, tileSize * 0.025 );;
-tileGeometrySimple.scale( 0.95, 0.95, 0.95 );
-var tileGeometryStone;
+var tileGeometries = [null, null, null];
+tileGeometries[0] = new THREE.BoxGeometry( tileSize * 0.95, tileSize * 0.95, tileSize * 0.025 );
+tileGeometries[0].scale( 0.95, 0.95, 0.95 );
 loader.load( './stl/Field_tile.stl', function ( tileGeometry ) {
-    tileGeometryStone = tileGeometry;
-    tileGeometryStone.translate( 0, -2, 0 );
-    tileGeometryStone.scale( 0.95, 0.95, 0.95 );
+    tileGeometries[1] = tileGeometry;
+    tileGeometries[1].translate( 0, -2, 0 );
+    tileGeometries[1].scale( 0.95, 0.95, 0.95 );
 });
-var tileGeometryCobble;
 loader.load( './stl/Cobblestone.stl', function ( tileGeometry ) {
-    tileGeometryCobble = tileGeometry;
-    tileGeometryCobble.translate( 0, -2, 0 );
-    tileGeometryCobble.scale( 0.95, 0.95, 0.95 );
+    tileGeometries[2] = tileGeometry;
+    tileGeometries[2].translate( 0, -2, 0 );
+    tileGeometries[2].scale( 0.95, 0.95, 0.95 );
 });
 
 function toggleWall( wallId ) {
-    /* wallFlags[wallIndex] = wallFlags[wallIndex] ? false : true;
-    document.getElementById('wall' + wallIndex).style.backgroundColor = (wallFlags[wallIndex]) ? 'black' : 'white'; */
     if( wallId === 'northWall' ) {
         northWall = northWall ? false : true;
         document.getElementById(wallId).style.backgroundColor = (northWall) ? 'black' : 'white';
@@ -291,15 +294,7 @@ function updateScreenControls() {
             // Add tile
             let tileGeometry = null;
             let tile = null;
-            if( tileType === 0 ) {
-                tileGeometry = tileGeometrySimple;
-            }
-            else if( tileType === 1 ) {
-                tileGeometry = tileGeometryStone;
-            }
-            else if( tileType === 2 ) {
-                tileGeometry = tileGeometryCobble;
-            }
+            tileGeometry = tileGeometries[0];
             tileGeometry.translate( 0, 0, 0 );
             tileGeometry.computeBoundingBox();
             tile = new THREE.Mesh( tileGeometry, tileMaterial );
@@ -408,11 +403,14 @@ function reset() {
 
 function changeStyle() {
     const i = parseInt(document.getElementById("style").selectedIndex);
-    if( i < 0  ||  i > 2 ) {
+    if( i < 0  ||  i > 3 ) {
         return;
     }
     tileType = i;
-    updateScreenControls();
+    if( tileType === 3 ) {
+        tileType = -1;
+    }
+    //updateScreenControls();
 }
 
 function changeWallHeight() {
@@ -449,9 +447,9 @@ animate();
 
 // Enable modals in Materialize
 document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems);
-    var instance = M.Tabs.init(document.querySelectorAll('.tabs'));
+    var modalInstances = M.Modal.init(document.querySelectorAll('.modal'));
+    var tabInstances = M.Tabs.init(document.querySelectorAll('.tabs'));
+    var selectInstances = M.FormSelect.init( document.querySelectorAll('select'));
 });
 </script>
 
