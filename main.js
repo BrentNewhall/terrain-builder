@@ -19,12 +19,6 @@ document.getElementById("controls").addEventListener("mouseover", (e) => {
 
 // Base
 var origin = new THREE.Vector3( 0, 0, 0 );
-/* var baseGeometry = new THREE.BoxGeometry( tileSize, tileSize * 0.1, tileSize );
-baseGeometry.computeFaceNormals();
-baseGeometry.computeVertexNormals();
-let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
-var base = new THREE.Mesh( baseGeometry, material );
-scene.add( base ); */
 var bases = [];
 var tiles = [];
 
@@ -40,12 +34,6 @@ document.getElementById("mainCanvas").addEventListener('click', function(event) 
         if( tileType >= 0 ) {
             selectedObject.object.geometry = tileGeometries[tileType];
         }
-        /* else if( tileType === 1 ) {
-            selectedObject.object.geometry = tileGeometryStone;
-        }
-        else if( tileType === 2 ) {
-            selectedObject.object.geometry = tileGeometryCobble;
-        } */
         else if( tileType === -1 ) {
             scene.remove( selectedObject.object );
         }
@@ -156,24 +144,9 @@ function animate() {
     renderer.render( scene, camera );
 }
 
-function addCustomTile( tileGeometry, row, col, rows, cols, rowOffset, colOffset ) {
-    tileGeometry.translate( 0, 0, 0 );
-    tileGeometry.computeBoundingBox();
-    let tile = new THREE.Mesh( tileGeometry, tileMaterial );
-    tile.geometry.scale( 0.95, 0.95, 0.95 );
-    tile.position.z = tileSize * 0.025;
-    tile.position.x = row * tileSize - rowOffset;
-    tile.position.y = col * tileSize - colOffset - 2;
-    scene.add( tile );
-    tiles.push( tile );
-}
-
 function updateScreenControls() {
     document.getElementById("rows").innerHTML = rows;
     document.getElementById("cols").innerHTML = cols;
-    //let geometry = new THREE.BoxGeometry( rows * tileSize, cols * tileSize, tileSize * 0.025 );
-    //base.geometry.dispose();
-    //base.geometry = geometry;
     // Remove all existing bases
     for( let base of bases ) {
         scene.remove( base );
@@ -334,6 +307,7 @@ function changeWallHeight() {
     wallStyle = i;
 }
 
+// Create feature in center of tile
 function changeFeature() {
     if( feature !== null ) {
         scene.remove( feature );
