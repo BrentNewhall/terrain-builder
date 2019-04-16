@@ -43,12 +43,14 @@
     </div>
     <div id="tab-customize">
         Tile style:
-        <select id="style" onchange="changeStyle()">
+        <select id="style" onchange="changeTileStyle()">
             <option value="0">Simple</option>
             <option value="1">Stone</option>
             <option value="2">Cobblestone</option>
             <option value="-1">(Delete)</option>
         </select>
+        <br />
+        Wall style:
         <select id="wallHeight" onchange="changeWallHeight()">
             <option value="low">Low walls</option>
             <option value="high">High walls</option>
@@ -157,6 +159,11 @@ document.getElementById("mainCanvas").addEventListener('click', function(event) 
             scene.remove( selectedObject.object );
         }
  	}
+    intersects = raycaster.intersectObjects( walls, true );
+    if( intersects.length > 0 ) {
+        intersects[0].object.geometry = wallGeometries[wallStyle];
+        if( wallStyle === 1 ) {  intersects[0].object.position.z += 12;  }
+    }
     intersects = raycaster.intersectObjects( bases, true );
     if( intersects.length > 0  &&  tileType === -1 ) {
         let selectedObject = intersects[0];
@@ -192,10 +199,16 @@ var eastWall = false;
 var westWall = false;
 var wallHeightModBase = 0.375;
 var wallHeightMod = 0.375;
-var wallGeometries = [null];
+var wallStyle = 0;
+var wallGeometries = [null,null];
 loader.load( './stl/Low_wall.stl', function ( wallGeometry ) {
     wallGeometries[0] = wallGeometry;
     wallGeometries[0].scale( 2.6, 1.02, 2 );
+});
+loader.load( './stl/Low_wall.stl', function ( wallGeometry ) {
+    wallGeometries[1] = wallGeometry;
+    wallGeometries[1].scale( 2.6, 1.02, 6 );
+    wallGeometries[1].position.z = 15;
 });
 
 // Tiles
@@ -316,7 +329,7 @@ function updateScreenControls() {
         scene.remove( wall );
     }
     walls = [];
-    const wallZmod = wallHeightMod / 2;
+    const wallZmod = wallHeightMod / 1.5;
     const wallLateralMod = 0.085;
     let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
     if( northWall ) {
@@ -324,6 +337,7 @@ function updateScreenControls() {
             let wall = new THREE.Mesh( wallGeometries[0], material );
             wall.rotation.z = 1.570796;
             wall.position.z = tileSize * wallZmod - 1.5;
+            //if( wallStyle === 1 ) { wall.position.z += 13.5 };
             wall.position.x = row * tileSize - rowOffset;
             wall.position.y = tileSize * cols * 0.5 - (tileSize * wallLateralMod);
             scene.add( wall );
@@ -336,6 +350,7 @@ function updateScreenControls() {
             wall.rotation.z = 1.570796;
             wall.position.x = row * tileSize - rowOffset;
             wall.position.z = tileSize * wallZmod - 1.5;
+            //if( wallStyle === 1 ) { wall.position.z += 13.5 };
             wall.position.y = 0 - tileSize * cols * 0.5 + (tileSize * wallLateralMod);
             scene.add( wall );
             walls.push( wall );
@@ -346,6 +361,7 @@ function updateScreenControls() {
             let wall = new THREE.Mesh( wallGeometries[0], material );
             wall.position.y = col * tileSize - colOffset;
             wall.position.z = tileSize * wallZmod - 1.5;
+            //if( wallStyle === 1 ) { wall.position.z += 13.5 };
             wall.position.x = tileSize * rows * 0.5 - (tileSize * wallLateralMod);
             scene.add( wall );
             walls.push( wall );
@@ -356,6 +372,7 @@ function updateScreenControls() {
             let wall = new THREE.Mesh( wallGeometries[0], material );
             wall.position.y = col * tileSize - colOffset;
             wall.position.z = tileSize * wallZmod - 1.5;
+            //if( wallStyle === 1 ) { wall.position.z += 13.5 };
             wall.position.x = 0 - tileSize * rows * 0.5 + (tileSize * wallLateralMod);
             scene.add( wall );
             walls.push( wall );
@@ -406,7 +423,7 @@ function reset() {
     updateScreenControls();
 }
 
-function changeStyle() {
+function changeTileStyle() {
     const i = parseInt(document.getElementById("style").selectedIndex);
     if( i < 0  ||  i > 3 ) {
         return;
@@ -415,7 +432,6 @@ function changeStyle() {
     if( tileType === 3 ) {
         tileType = -1;
     }
-    //updateScreenControls();
 }
 
 function changeWallHeight() {
@@ -424,7 +440,7 @@ function changeWallHeight() {
         return;
     }
     wallHeightMod = i + wallHeightModBase;
-    updateScreenControls();
+    wallStyle = i;
 }
 
 function changeFeature() {
@@ -464,7 +480,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <h4>How This Works</h4>
         <p>This app generates tabletop RPG terrain tiles and exports them for 3D printing.</p>
         <p>Under the <strong>Design</strong> tab, use the <em>Rows</em> and <em>Columns</em> sliders to choose the size of the tile. Click the <em>Walls</em> buttons to add walls on any 4 sides.</p>
-        <p>Under the <strong>Customize</strong> tab, select a tile style and tap/click any tile to change it to that style. Click the <em>Low/High walls</em> drop-down to change wall height. Click <em>Add feature</em> to add an object to the center of the tile.</em></p>
+        <p>Under the <strong>Customize</strong> tab, select a tile style and tap/click any tile to change it to that style. Ditto with the wall style. Click <em>Add feature</em> to add an object to the center of the tile.</em></p>
         <p>Under the <strong>Print</strong> tab, click the <em>Download</em> button to download the entire tile as an STL file for 3D printing.</p>
         <p>This app generates tiles that are 1.25" square and 0.25" walls. This allws a 1", 28mm-scale mini to fit on any square, even if that square contains walls, while also keeping all tiles a consistent size.</p>
     </div>
