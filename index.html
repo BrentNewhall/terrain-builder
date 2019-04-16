@@ -28,7 +28,7 @@
         <li class="tab"><a href="#tab-customize">Customize</a></li>
         <li class="tab"><a href="#tab-print">Print</a></li>
     </ul>
-    <div id="tab-design">
+    <div id="tab-design" class="tab-content">
         <div>Columns:</div>
         <input type="range" id="rows" min="1" max="8" value="2" onchange="setRows()" />
         <br />
@@ -41,7 +41,7 @@
         <button class="wallBtnVertical" id="westWall" onclick="toggleWall('westWall')">&nbsp;</button><br />
         <button class="wallBtnHorizontal" id="southWall" onclick="toggleWall('southWall')">&nbsp;</button><br />
     </div>
-    <div id="tab-customize">
+    <div id="tab-customize" class="tab-content">
         Tile style:
         <select id="style" onchange="changeTileStyle()">
             <option value="0">Simple</option>
@@ -79,7 +79,7 @@
             </div>
         </div>
     </div>
-    <div id="tab-print">
+    <div id="tab-print" class="tab-content">
         <div style="display: flex; justify-content: space-around">
             <button class="btn" id="downloadBtn" onclick="saveSTL()">Download</button>
             <a class="waves-effect waves-light btn blue modal-trigger" href="#helpModal">Help</a><br />

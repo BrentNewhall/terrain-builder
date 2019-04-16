@@ -44,6 +44,9 @@ canvas {
     height: 10em;
     background-color: white;
 }
+.tab-content {
+    margin-bottom: 25px;
+}
 h1 {
     font-size: 200%;
     margin-top: 0px;
