@@ -10,6 +10,7 @@
     <!-- Compiled and minified Materalize JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link rel="stylesheet" href="style.css" />
+    <!-- Google Ad scripts -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({
@@ -28,6 +29,7 @@
         <li class="tab"><a href="#tab-customize">Customize</a></li>
         <li class="tab"><a href="#tab-print">Print</a></li>
     </ul>
+    <!-- Design Tab -->
     <div id="tab-design" class="tab-content">
         <div>Columns:</div>
         <input type="range" id="rows" min="1" max="8" value="2" onchange="setRows()" />
@@ -41,6 +43,7 @@
         <button class="wallBtnVertical" id="westWall" onclick="toggleWall('westWall')">&nbsp;</button><br />
         <button class="wallBtnHorizontal" id="southWall" onclick="toggleWall('southWall')">&nbsp;</button><br />
     </div>
+    <!-- Customize Tab -->
     <div id="tab-customize" class="tab-content">
         Tile style:
         <select id="style" onchange="changeTileStyle()">
@@ -79,6 +82,7 @@
             </div>
         </div>
     </div>
+    <!-- Print Tab -->
     <div id="tab-print" class="tab-content">
         <div style="display: flex; justify-content: space-around">
             <button class="btn" id="downloadBtn" onclick="saveSTL()">Download</button>
@@ -86,7 +90,7 @@
         </div>
     </div>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- Terrain Builder ad -->
+    <!-- Google ad -->
     <ins class="adsbygoogle"
     style="display:block"
     data-ad-client="ca-pub-1706194087486856"
@@ -96,16 +100,17 @@
     <script>
     (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
-    <!-- img width="300" height="250" alt="Temp" src="http://lorempixel.com/300/250" / -->
 </div>
 
 <div id="speed"></div>
 
+<!-- Import external JS -->
 <script src="three.js"></script>
 <script src="STLExporter.js"></script>
 <script src="FileSaver.js"></script>
 <script src="loaders/STLLoader.js"></script>
 
+<!-- Import main internal JS -->
 <script src="main.js"></script>
 
 <!-- Help Modal -->
