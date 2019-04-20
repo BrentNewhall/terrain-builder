@@ -45,6 +45,7 @@ canvas {
     background-color: white;
 }
 .tab-content {
+    margin-top: 15px;
     margin-bottom: 25px;
 }
 h1 {

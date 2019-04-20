@@ -1,4 +1,5 @@
-var tileSize = 30.5;
+//var tileSize = 30.5;
+var tileSize = 31.5;
 var mesh = null;
 var rows = 2;
 var cols = 2;
@@ -41,7 +42,8 @@ document.getElementById("mainCanvas").addEventListener('click', function(event) 
     intersects = raycaster.intersectObjects( walls, true );
     if( intersects.length > 0 ) {
         intersects[0].object.geometry = wallGeometries[wallStyle];
-        if( wallStyle === 1 ) {  intersects[0].object.position.z += 12;  }
+        if( wallStyle === 0 ) {  intersects[0].object.position.z -= 18;  } // was 12
+        else if( wallStyle === 1 ) {  intersects[0].object.position.z += 18;  } // was 12
     }
     intersects = raycaster.intersectObjects( bases, true );
     if( intersects.length > 0  &&  tileType === -1 ) {
@@ -82,11 +84,11 @@ var wallStyle = 0;
 var wallGeometries = [null,null];
 loader.load( './stl/Low_wall.stl', function ( wallGeometry ) {
     wallGeometries[0] = wallGeometry;
-    wallGeometries[0].scale( 2.6, 1.02, 2 );
+    wallGeometries[0].scale( 2.7, 1.05, 2 ); // was 2.6, 1.02, 2
 });
 loader.load( './stl/Low_wall.stl', function ( wallGeometry ) {
     wallGeometries[1] = wallGeometry;
-    wallGeometries[1].scale( 2.6, 1.02, 6 );
+    wallGeometries[1].scale( 2.7, 1.05, 8 ); // was 2.6, 1.02, 6
     wallGeometries[1].position.z = 15;
 });
 
