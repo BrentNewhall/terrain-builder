@@ -45,17 +45,17 @@
     </div>
     <!-- Customize Tab -->
     <div id="tab-customize" class="tab-content">
-        Tile style:
+        Tile style (click/tap tile to change):
         <br />
         <label><input type="radio" name="tileStyle" id="tileStyle1" value="0" onchange="changeTileStyle(0)" checked="checked" /> <span>Simple</span></label><br />
         <label><input type="radio" name="tileStyle" id="tileStyle2" value="1" onchange="changeTileStyle(1)" /> <span>Stone</span></label><br />
         <label><input type="radio" name="tileStyle" id="tileStyle3" value="2" onchange="changeTileStyle(2)" /> <span>Cobblestone</span></label><br />
         <label><input type="radio" name="tileStyle" id="tileStyle4" value="-1" onchange="changeTileStyle(-1)" /> <span>(Delete)</span></label><br />
         <br />
-        Wall style:
+        Wall style (click/tap wall to change):
         <br />
-        <label><input type="radio" name="wallHeight" id="wallHeight1" value="0" onchange="changeWallHeight()" checked="checked" /> <span>Low walls</span></label><br />
-        <label><input type="radio" name="wallHeight" id="wallHeight2" value="1" onchange="changeWallHeight()" /> <span>High walls</span></label><br />
+        <label><input type="radio" name="wallHeight" id="wallHeight1" value="0" onchange="changeWallHeight(0)" checked="checked" /> <span>Low walls</span></label><br />
+        <label><input type="radio" name="wallHeight" id="wallHeight2" value="1" onchange="changeWallHeight(1)" /> <span>High walls</span></label><br />
         <br />
         <select id="feature" onchange="changeFeature()">
             <option value="none">Add feature...</option>

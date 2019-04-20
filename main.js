@@ -291,8 +291,8 @@ function reset() {
     updateScreenControls();
 }
 
+// Change style of tiles
 function changeTileStyle( newStyle ) {
-    //const i = parseInt(document.getElementById("style").selectedIndex);
     if( newStyle < -1  ||  newStyle > 2 ) {
         return;
     }
@@ -300,17 +300,12 @@ function changeTileStyle( newStyle ) {
 }
 
 // Change current wall height based on wallHeight radio button
-function changeWallHeight() {
-    let i = 0;
-    if( document.getElementsByName("wallHeight")[1].checked === true ) {
-        i = 1;
-    }
-    console.log( i );
-    if( i < 0  ||  i > 1 ) {
+function changeWallHeight( newStyle ) {
+    if( newStyle < 0  ||  newStyle > 1 ) {
         return;
     }
-    wallHeightMod = i + wallHeightModBase;
-    wallStyle = i;
+    wallHeightMod = newStyle + wallHeightModBase;
+    wallStyle = newStyle;
 }
 
 // Create feature in center of tile
