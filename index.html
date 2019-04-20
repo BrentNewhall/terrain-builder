@@ -54,10 +54,9 @@
         </select>
         <br />
         Wall style:
-        <select id="wallHeight" onchange="changeWallHeight()">
-            <option value="low">Low walls</option>
-            <option value="high">High walls</option>
-        </select>
+        <br />
+        <label><input type="radio" name="wallHeight" id="wallHeight1" value="0" onchange="changeWallHeight()" checked="checked" /> <span>Low walls</span></label><br />
+        <label><input type="radio" name="wallHeight" id="wallHeight2" value="1" onchange="changeWallHeight()" /> <span>High walls</span></label><br />
         <br />
         <select id="feature" onchange="changeFeature()">
             <option value="none">Add feature...</option>

@@ -302,8 +302,13 @@ function changeTileStyle() {
     }
 }
 
+// Change current wall height based on wallHeight radio button
 function changeWallHeight() {
-    const i = parseInt(document.getElementById("wallHeight").selectedIndex);
+    let i = 0;
+    if( document.getElementsByName("wallHeight")[1].checked === true ) {
+        i = 1;
+    }
+    console.log( i );
     if( i < 0  ||  i > 1 ) {
         return;
     }
