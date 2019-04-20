@@ -46,12 +46,11 @@
     <!-- Customize Tab -->
     <div id="tab-customize" class="tab-content">
         Tile style:
-        <select id="style" onchange="changeTileStyle()">
-            <option value="0">Simple</option>
-            <option value="1">Stone</option>
-            <option value="2">Cobblestone</option>
-            <option value="-1">(Delete)</option>
-        </select>
+        <br />
+        <label><input type="radio" name="tileStyle" id="tileStyle1" value="0" onchange="changeTileStyle(0)" checked="checked" /> <span>Simple</span></label><br />
+        <label><input type="radio" name="tileStyle" id="tileStyle2" value="1" onchange="changeTileStyle(1)" /> <span>Stone</span></label><br />
+        <label><input type="radio" name="tileStyle" id="tileStyle3" value="2" onchange="changeTileStyle(2)" /> <span>Cobblestone</span></label><br />
+        <label><input type="radio" name="tileStyle" id="tileStyle4" value="-1" onchange="changeTileStyle(-1)" /> <span>(Delete)</span></label><br />
         <br />
         Wall style:
         <br />

@@ -291,15 +291,12 @@ function reset() {
     updateScreenControls();
 }
 
-function changeTileStyle() {
-    const i = parseInt(document.getElementById("style").selectedIndex);
-    if( i < 0  ||  i > 3 ) {
+function changeTileStyle( newStyle ) {
+    //const i = parseInt(document.getElementById("style").selectedIndex);
+    if( newStyle < -1  ||  newStyle > 2 ) {
         return;
     }
-    tileType = i;
-    if( tileType === 3 ) {
-        tileType = -1;
-    }
+    tileType = newStyle;
 }
 
 // Change current wall height based on wallHeight radio button
