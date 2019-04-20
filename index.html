@@ -63,8 +63,10 @@
             <option value="none">Add feature...</option>
             <option value="fountain">Fountain</option>
         </select>
-        <br />
-        <button class="btn orange" onclick="reset()">Reset</button>
+        <div style="display: flex; justify-content: space-around; margin-top: 25px">
+            <button class="btn" id="rotationBtn" onclick="changeRotation()">Stop rotation</button>
+            <button class="btn orange" onclick="reset()">Reset</button>
+        </div>
         <!-- Loading spinner -->
         <div id="spinner">
             <div class="preloader-wrapper big active">

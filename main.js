@@ -7,6 +7,8 @@ var mouseHovering = false;
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
+var keepRotating = true;
+
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth - 320, window.innerHeight );
 document.body.appendChild( renderer.domElement );
@@ -138,7 +140,7 @@ function animate() {
         camera.position.x = 0;
         camera.position.y = 0;
     }
-    else {
+    else if( keepRotating ) {
         camera.position.x = 75 * Math.cos( elapsedTime * 0.5 );
         camera.position.y = 75 * Math.sin( elapsedTime * 0.5 );
     }
@@ -328,6 +330,17 @@ function changeFeature() {
         scene.add( feature );
         document.getElementById("spinner").style.display = "none";
     });
+}
+
+function changeRotation() {
+    if( keepRotating ) {
+        keepRotating = false;
+        document.getElementById('rotationBtn').innerHTML = "Start rotation";
+    }
+    else {
+        keepRotating = true;
+        document.getElementById('rotationBtn').innerHTML = "Stop rotation";
+    }
 }
 
 updateScreenControls();
