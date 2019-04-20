@@ -332,21 +332,22 @@ function changeFeature() {
     });
 }
 
-function changeRotation() {
+// Pause or continue the rotation of the 3D tile
+function changeRotation( keepRotating ) {
     if( keepRotating ) {
-        keepRotating = false;
         document.getElementById('rotationBtn').innerHTML = "Start rotation";
+        return false;
     }
     else {
-        keepRotating = true;
         document.getElementById('rotationBtn').innerHTML = "Stop rotation";
+        return true;
     }
 }
 
 updateScreenControls();
 animate();
 
-// Enable modals in Materialize
+// Enable various features in Materialize
 document.addEventListener('DOMContentLoaded', function() {
     var modalInstances = M.Modal.init(document.querySelectorAll('.modal'));
     var tabInstances = M.Tabs.init(document.querySelectorAll('.tabs'));
