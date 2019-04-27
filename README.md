@@ -4,6 +4,8 @@ This is a web app that displays a 3D rendering of a tabletop RPG terrain tile,
 with controls for changing its size and walls. You can also download the tile as
 a standard STL file for 3D printing.
 
+![Screenshot](terrain_builder_screenshot.png)
+
 ## Technologies
 
 This app uses [ThreeJS](https://threejs.org) to render the tile, and the
