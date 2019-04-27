@@ -103,7 +103,7 @@ loader.load( './stl/Low_wall.stl', function ( wallGeometry ) {
 });
 
 // Tiles
-var tileMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+var tileMaterial = new THREE.MeshLambertMaterial( { color: 0xaaaaaa } );
 var tileType = 0;
 var tileGeometries = [null, null, null];
 tileGeometries[0] = new THREE.BoxGeometry( tileSize * 0.95, tileSize * 0.95, tileSize * 0.025 );
