@@ -119,23 +119,19 @@ loader.load( './stl/Cobblestone.stl', function ( tileGeometry ) {
     tileGeometries[2].scale( 0.95, 0.95, 0.95 );
 });
 
+function toggleWallById( id, inID, wallFlag ) {
+    if( id === inID ) {
+        wallFlag = wallFlag ? false : true;
+        document.getElementById(id).style.backgroundColor = (wallFlag) ? 'black' : 'white';
+    }
+    return wallFlag;
+}
+
 function toggleWall( wallId ) {
-    if( wallId === 'northWall' ) {
-        northWall = northWall ? false : true;
-        document.getElementById(wallId).style.backgroundColor = (northWall) ? 'black' : 'white';
-    }
-    else if( wallId === 'southWall' ) {
-        southWall = southWall ? false : true;
-        document.getElementById(wallId).style.backgroundColor = (southWall) ? 'black' : 'white';
-    }
-    else if( wallId === 'eastWall' ) {
-        eastWall = eastWall ? false : true;
-        document.getElementById(wallId).style.backgroundColor = (eastWall) ? 'black' : 'white';
-    }
-    else if( wallId === 'westWall' ) {
-        westWall = westWall ? false : true;
-        document.getElementById(wallId).style.backgroundColor = (westWall) ? 'black' : 'white';
-    }
+    northWall = toggleWallById( wallId, "northWall", northWall );
+    southWall = toggleWallById( wallId, "southWall", southWall );
+    eastWall = toggleWallById( wallId, "eastWall", eastWall );
+    westWall = toggleWallById( wallId, "westWall", westWall );
     updateScreenControls();
 }
 
