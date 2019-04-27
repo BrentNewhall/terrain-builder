@@ -253,7 +253,7 @@ function updateScreenControls() {
         }
     }
     // Move camera based on size of base
-    zoomFactor = ((rows < cols) ? cols : rows) * 25;
+    zoomFactor = ((rows < cols) ? cols : rows) * 35;
     camera.position.z = zoomFactor;
 }
 
@@ -342,7 +342,7 @@ function changeRotation( keepRotating ) {
         return false;
     }
     else {
-        document.getElementById('rotationBtn').innerHTML = "Stop rotation";
+        document.getElementById('rotationBtn').innerHTML = "Pause rotation";
         return true;
     }
 }
