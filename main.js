@@ -58,10 +58,13 @@ document.getElementById("mainCanvas").addEventListener('click', function(event) 
  	}
 }, false)
 
-// Light
-var light = new THREE.DirectionalLight( 0xffffff, 1 );
-light.position.z = 2;
-scene.add( light );
+// Lights
+var light1 = new THREE.DirectionalLight( 0xffffff, 1 );
+light1.position.set( 2, 2, 2 );
+scene.add( light1 );
+var light2 = new THREE.DirectionalLight( 0xffffff, 1 );
+light2.position.set( -2, -2, 2 );
+scene.add( light2 );
 
 // Position camera
 camera.position.z = 70;
