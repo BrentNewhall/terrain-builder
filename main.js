@@ -146,7 +146,7 @@ function animate() {
     if( mouseHovering ) {
         camera.position.x = 0;
         camera.position.y = 0;
-        camera.up = axis;
+        camera.up = new THREE.Vector3( 0, 1, 1 );
     }
     else if( keepRotating ) {
         camera.position.applyQuaternion(quaternion.setFromAxisAngle(axis, 0.01));
@@ -293,6 +293,7 @@ function reset() {
     elems = document.querySelectorAll('select');
     instances = M.FormSelect.init(elems);
     changeFeature();
+    //changeWallHeight( 0 );
     updateScreenControls();
 }
 
