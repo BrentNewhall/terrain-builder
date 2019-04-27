@@ -6,6 +6,7 @@ var cols = 2;
 var mouseHovering = false;
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+var zoomFactor = 70;
 
 var keepRotating = true;
 
@@ -17,6 +18,9 @@ document.getElementById("mainCanvas").addEventListener("mouseover", (e) => {
     mouseHovering = true;
 })
 document.getElementById("controls").addEventListener("mouseover", (e) => {
+    if( mouseHovering ) {
+        camera.position.set( 0, -75, zoomFactor );
+    }
     mouseHovering = false;
 })
 
@@ -62,6 +66,7 @@ scene.add( light );
 // Position camera
 camera.position.z = 70;
 camera.position.y = -70;
+camera.position.set( 0, -75, zoomFactor );
 
 var clock = new THREE.Clock();
 var matrix = new THREE.Matrix4();
@@ -133,24 +138,22 @@ function toggleWall( wallId ) {
 
 function animate() {
     requestAnimationFrame( animate );
-    const elapsedTime = clock.getElapsedTime();
-    //matrix.makeRotationZ( clock.getDelta() * 2 * Math.PI * 10 );
-    //camera.position.applyMatrix4( matrix );
+    let axis = new THREE.Vector3( 0, 0, 1 );
+    let quaternion = new THREE.Quaternion;
     if( mouseHovering ) {
         camera.position.x = 0;
         camera.position.y = 0;
+        camera.up = axis;
     }
     else if( keepRotating ) {
-        camera.position.x = 75 * Math.cos( elapsedTime * 0.5 );
-        camera.position.y = 75 * Math.sin( elapsedTime * 0.5 );
+        camera.position.applyQuaternion(quaternion.setFromAxisAngle(axis, 0.01));
+        camera.up.applyQuaternion(quaternion.setFromAxisAngle(axis, 0.01));
     }
     camera.lookAt( origin );
     renderer.render( scene, camera );
 }
 
 function updateScreenControls() {
-    document.getElementById("rows").innerHTML = rows;
-    document.getElementById("cols").innerHTML = cols;
     // Remove all existing bases
     for( let base of bases ) {
         scene.remove( base );
@@ -247,9 +250,8 @@ function updateScreenControls() {
         }
     }
     // Move camera based on size of base
-    const max = ((rows < cols) ? cols : rows) * 25;
-    camera.position.z = max;
-    camera.position.y = 0 - max;
+    zoomFactor = ((rows < cols) ? cols : rows) * 25;
+    camera.position.z = zoomFactor;
 }
 
 function setRows() {
