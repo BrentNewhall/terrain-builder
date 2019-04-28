@@ -1,4 +1,3 @@
-//var tileSize = 30.5;
 var tileSize = 31.5;
 var mesh = null;
 var rows = 2;
@@ -48,8 +47,6 @@ document.getElementById("mainCanvas").addEventListener('click', function(event) 
     intersects = raycaster.intersectObjects( walls, true );
     if( intersects.length > 0 ) {
         intersects[0].object.geometry = wallGeometries[wallStyle];
-        if( wallStyle <= 1 ) {  intersects[0].object.position.z -= 18;  } // was 12
-        else if( wallStyle === 2 ) {  intersects[0].object.position.z += 18;  } // was 12
     }
     intersects = raycaster.intersectObjects( bases, true );
     if( intersects.length > 0  &&  tileType === -1 ) {
@@ -88,8 +85,6 @@ var northWall = false;
 var southWall = false;
 var eastWall = false;
 var westWall = false;
-var wallHeightModBase = 0.375;
-var wallHeightMod = 0.375;
 var wallStyle = 0;
 var wallGeometries = [null,null,null];
 loader.load( './stl/Low_wall.stl', function ( wallGeometry ) {
@@ -99,10 +94,10 @@ loader.load( './stl/Low_wall.stl', function ( wallGeometry ) {
 loader.load( './stl/Cinderblock.stl', function ( wallGeometry ) {
     wallGeometries[1] = wallGeometry;
 });
-loader.load( './stl/Low_wall.stl', function ( wallGeometry ) {
+loader.load( './stl/High_wall.stl', function ( wallGeometry ) {
     wallGeometries[2] = wallGeometry;
-    wallGeometries[2].scale( 1, 1, 4 ); // was 2.7, 1.05, 8
-    wallGeometries[2].position.z = 15;
+    //wallGeometries[2].scale( 1, 1, 4 ); // was 2.7, 1.05, 8
+    //wallGeometries[2].position.z = 15;
 });
 
 // Tiles
@@ -202,7 +197,7 @@ function updateScreenControls() {
         scene.remove( wall );
     }
     walls = [];
-    const wallZmod = wallHeightMod / 1.5;
+    const wallZmod = 0.25;
     const wallLateralMod = 0.085;
     let material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
     if( northWall ) {
@@ -306,10 +301,6 @@ function changeTileStyle( newStyle ) {
 function changeWallHeight( newStyle ) {
     if( newStyle < 0  ||  newStyle > 2 ) {
         return;
-    }
-    wallHeightMod = wallHeightModBase;
-    if( newStyle === 2 ) {
-        wallHeightMod += wallHeightModBase;
     }
     wallStyle = newStyle;
 }
