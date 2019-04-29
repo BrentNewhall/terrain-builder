@@ -89,15 +89,15 @@ var wallStyle = 0;
 var wallGeometries = [null,null,null];
 loader.load( './stl/Low_wall.stl', function ( wallGeometry ) {
     wallGeometries[0] = wallGeometry;
-    //wallGeometries[0].scale( 2.7, 1.05, 2 ); // was 2.6, 1.02, 2
 });
-loader.load( './stl/Cinderblock.stl', function ( wallGeometry ) {
+loader.load( './stl/Stone_wall.stl', function ( wallGeometry ) {
     wallGeometries[1] = wallGeometry;
 });
-loader.load( './stl/High_wall.stl', function ( wallGeometry ) {
+loader.load( './stl/Cinderblock.stl', function ( wallGeometry ) {
     wallGeometries[2] = wallGeometry;
-    //wallGeometries[2].scale( 1, 1, 4 ); // was 2.7, 1.05, 8
-    //wallGeometries[2].position.z = 15;
+});
+loader.load( './stl/High_wall.stl', function ( wallGeometry ) {
+    wallGeometries[3] = wallGeometry;
 });
 
 // Tiles
@@ -261,20 +261,6 @@ function setCols() {
     updateScreenControls();
 }
 
-function updateRows( amount ) {
-    if( rows + amount >= 1  &&  rows + amount <= 8 ) {
-        rows += amount;
-        updateScreenControls();
-    }
-}
-
-function updateCols( amount ) {
-    if( cols + amount >= 1  &&  cols + amount <= 8 ) {
-        cols += amount;
-        updateScreenControls();
-    }
-}
-
 function saveSTL() {
     var exporter = new THREE.STLExporter();
     var stlString = exporter.parse( scene );
@@ -287,7 +273,6 @@ function reset() {
     elems = document.querySelectorAll('select');
     instances = M.FormSelect.init(elems);
     changeFeature();
-    //changeWallHeight( 0 );
     updateScreenControls();
 }
 
