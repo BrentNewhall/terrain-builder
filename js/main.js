@@ -28,12 +28,7 @@ var origin = new THREE.Vector3( 0, 0, 0 );
 var bases = [];
 var tiles = [];
 
-document.getElementById("mainCanvas").addEventListener('click', function(event) {
-    let raycaster = new THREE.Raycaster();
-    let mouse = new THREE.Vector2();
-    mouse.x = ( event.clientX / document.getElementById("mainCanvas").clientWidth ) * 2 - 1;
-    mouse.y = 0 - ( event.clientY / document.getElementById("mainCanvas").clientHeight ) * 2 + 1;
-    raycaster.setFromCamera( mouse, camera );
+function changeClickedTile( raycaster ) {
     let intersects = raycaster.intersectObjects( tiles, true );
     if (intersects.length > 0) {
         let selectedObject = intersects[0];
@@ -43,16 +38,31 @@ document.getElementById("mainCanvas").addEventListener('click', function(event) 
         else if( tileType === -1 ) {
             scene.remove( selectedObject.object );
         }
- 	}
-    intersects = raycaster.intersectObjects( walls, true );
-    if( intersects.length > 0 ) {
-        intersects[0].object.geometry = wallGeometries[wallStyle];
     }
     intersects = raycaster.intersectObjects( bases, true );
     if( intersects.length > 0  &&  tileType === -1 ) {
         let selectedObject = intersects[0];
         scene.remove( selectedObject.object );
- 	}
+    }
+}
+
+function changeClickedSceneElement( raycaster ) {
+    let intersects = raycaster.intersectObjects( walls, true );
+    if( intersects.length > 0 ) {
+        intersects[0].object.geometry = wallGeometries[wallStyle];
+    }
+    else {
+        changeClickedTile( raycaster );
+    }
+}
+
+document.getElementById("mainCanvas").addEventListener('click', function(event) {
+    let raycaster = new THREE.Raycaster();
+    let mouse = new THREE.Vector2();
+    mouse.x = ( event.clientX / document.getElementById("mainCanvas").clientWidth ) * 2 - 1;
+    mouse.y = 0 - ( event.clientY / document.getElementById("mainCanvas").clientHeight ) * 2 + 1;
+    raycaster.setFromCamera( mouse, camera );
+    changeClickedSceneElement( raycaster );
 }, false)
 
 // Lights
