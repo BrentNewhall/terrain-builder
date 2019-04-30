@@ -86,7 +86,7 @@ var southWall = false;
 var eastWall = false;
 var westWall = false;
 var wallStyle = 0;
-var wallGeometries = [null,null,null];
+var wallGeometries = [null,null,null,null,null];
 loader.load( './stl/Low_wall.stl', function ( wallGeometry ) {
     wallGeometries[0] = wallGeometry;
 });
@@ -98,6 +98,9 @@ loader.load( './stl/Cinderblock.stl', function ( wallGeometry ) {
 });
 loader.load( './stl/High_wall.stl', function ( wallGeometry ) {
     wallGeometries[3] = wallGeometry;
+});
+loader.load( './stl/Archway.stl', function ( wallGeometry ) {
+    wallGeometries[4] = wallGeometry;
 });
 
 // Tiles
@@ -284,7 +287,7 @@ function changeTileStyle( newStyle ) {
 }
 
 function changeWallHeight( newStyle ) {
-    if( newStyle < 0  ||  newStyle > 2 ) {
+    if( newStyle < 0  ||  newStyle > 4 ) {
         return;
     }
     wallStyle = newStyle;
