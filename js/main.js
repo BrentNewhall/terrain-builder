@@ -96,7 +96,7 @@ var southWall = false;
 var eastWall = false;
 var westWall = false;
 var wallStyle = 0;
-var wallGeometries = [null,null,null,null,null];
+var wallGeometries = [null,null,null,null,null,null];
 loader.load( './stl/Low_wall.stl', function ( wallGeometry ) {
     wallGeometries[0] = wallGeometry;
 });
@@ -106,17 +106,20 @@ loader.load( './stl/Stone_wall.stl', function ( wallGeometry ) {
 loader.load( './stl/Cinderblock.stl', function ( wallGeometry ) {
     wallGeometries[2] = wallGeometry;
 });
-loader.load( './stl/High_wall.stl', function ( wallGeometry ) {
+loader.load( './stl/Boulders.stl', function ( wallGeometry ) {
     wallGeometries[3] = wallGeometry;
 });
-loader.load( './stl/Archway.stl', function ( wallGeometry ) {
+loader.load( './stl/High_wall.stl', function ( wallGeometry ) {
     wallGeometries[4] = wallGeometry;
+});
+loader.load( './stl/Archway.stl', function ( wallGeometry ) {
+    wallGeometries[5] = wallGeometry;
 });
 
 // Tiles
 var tileMaterial = new THREE.MeshLambertMaterial( { color: 0xaaaaaa } );
 var tileType = 0;
-var tileGeometries = [null, null, null];
+var tileGeometries = [null, null, null, null];
 tileGeometries[0] = new THREE.BoxGeometry( tileSize * 0.95, tileSize * 0.95, tileSize * 0.025 );
 tileGeometries[0].scale( 0.95, 0.95, 0.95 );
 loader.load( './stl/Field_tile.stl', function ( tileGeometry ) {
@@ -128,6 +131,10 @@ loader.load( './stl/Cobblestone.stl', function ( tileGeometry ) {
     tileGeometries[2] = tileGeometry;
     tileGeometries[2].translate( 0, -2, 0 );
     tileGeometries[2].scale( 0.95, 0.95, 0.95 );
+});
+loader.load( './stl/Rubble.stl', function ( tileGeometry ) {
+    tileGeometries[3] = tileGeometry;
+    tileGeometries[3].scale( 0.95, 0.95, 0.95 );
 });
 
 function toggleWallById( id, inID, wallFlag ) {
@@ -290,7 +297,7 @@ function reset() {
 }
 
 function changeTileStyle( newStyle ) {
-    if( newStyle < -1  ||  newStyle > 2 ) {
+    if( newStyle < -1  ||  newStyle > 3 ) {
         return;
     }
     tileType = newStyle;
