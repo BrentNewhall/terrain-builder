@@ -1,4 +1,5 @@
 var tileSize = 31.5;
+
 var mesh = null;
 var rows = 2;
 var cols = 2;
@@ -316,15 +317,14 @@ function changeFeature() {
         scene.remove( feature );
         delete feature;
     }
-    const features = [ 'none', 'Fountain' ];
+    const features = [ 'none', 'Fountain', 'Pool' ];
     const i = parseInt(document.getElementById("feature").selectedIndex);
-    if( i < 1  ||  i > features.length ) {
+    if( i < 1  ||  i >= features.length ) {
         return;
     }
     document.getElementById("spinner").style.display = "block";
     loader.load( './stl/' + features[i] + '.stl', function ( geometry ) {
-        const material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
-        feature = new THREE.Mesh( geometry, material );
+        feature = new THREE.Mesh( geometry, tileMaterial );
         feature.position.z = tileSize * 0.15;
         scene.add( feature );
         document.getElementById("spinner").style.display = "none";
