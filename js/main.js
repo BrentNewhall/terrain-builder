@@ -305,7 +305,7 @@ function changeTileStyle( newStyle ) {
 }
 
 function changeWallHeight( newStyle ) {
-    if( newStyle < 0  ||  newStyle > 4 ) {
+    if( newStyle < 0  ||  newStyle > 5 ) {
         return;
     }
     wallStyle = newStyle;
